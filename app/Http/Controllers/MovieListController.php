@@ -33,7 +33,7 @@ class MovieListController extends Controller
             ['path' => url('/movie')] // URL and query for pagination links
         );
         
-        return view('movie.index', ['movies' => $paginator]);
+        return view('movie.index', ['movies' => $paginator])->with('paginationView', 'vendor.pagination.custom');
     }
 
     /**

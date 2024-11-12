@@ -1,4 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 
 * {
     box-sizing: border-box;
@@ -7,7 +12,7 @@
     font-family: Poppins;
 }
 
-nav {
+.top-bar {
     padding: 8px 64px;
     display: flex;
     justify-content: space-between;
@@ -15,7 +20,7 @@ nav {
     align-self: stretch;
 }
 
-nav ul {
+.top-bar ul {
     display: flex;
     flex-direction: row;
     gap: 24px;
@@ -25,7 +30,7 @@ nav ul {
     width: 512px;
 }
 
-nav ul li a {
+.top-bar ul li a {
     text-decoration: none;
     color: black;
 }
@@ -49,6 +54,11 @@ nav ul li a {
     font-weight: 500;
     margin-bottom: 25px;
     margin-top: 25px;
+}
+
+.input-container label {
+    z-index: -1;
+    user-select: none;
 }
 
 .input-container.active {
@@ -90,4 +100,34 @@ input {
 /* Visible input style */
 .visible-input {
     display: inline-block;
+}
+
+.pagination {
+    display: flex;
+}
+
+.pagination li {
+    list-style-type: none;
+}
+
+.pagination a,
+.pagination span {
+    padding: 8px 12px;
+    background-color: #ddd;
+    color: #333;
+    text-decoration: none;
+}
+
+.pagination a:hover {
+    background-color: #ccc;
+}
+
+.pagination .active span {
+    background-color: #007bff;
+    color: white;
+}
+
+.pagination .disabled span {
+    background-color: #f1f1f1;
+    color: #bbb;
 }

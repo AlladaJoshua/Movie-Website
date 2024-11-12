@@ -1,4 +1,4 @@
-<nav>
+<nav class="top-bar">
     <a href="{{ route('movie.index') }}" class="{{ request()->routeIs('movie.index') ? 'active' : '' }}"><img src="{{ asset('assets/Logo jacliner.svg') }}" alt=""></a>
     <ul>
         <li><a href="{{ route('movie.index') }}" class="{{ request()->routeIs('movie.index') ? 'active' : '' }}">Movies</a></li>

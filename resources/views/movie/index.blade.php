@@ -33,7 +33,7 @@
             </ul>
 
             <div>
-                {{ $movies->links() }}
+                {{ $movies->links('vendor.pagination.custom') }}
             </div>
         @else
             <p>No movies found for "{{ $query }}".</p>
