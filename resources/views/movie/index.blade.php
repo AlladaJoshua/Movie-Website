@@ -15,18 +15,25 @@
                 @foreach ($movies as $movie)
                     <li class="movie-content">
                         @if ($movie['poster_path'])
-                            <img src="https://image.tmdb.org/t/p/w200{{ $movie['poster_path'] }}"
-                                alt="{{ $movie['title'] }} Poster">
+                            <div class="image-container">
+                                <img src="https://image.tmdb.org/t/p/w200{{ $movie['poster_path'] }}"
+                                    alt="{{ $movie['title'] }} Poster">
+                                <div class="overlay">
+                                    <span class="play-button">&#9658;</span> <!-- Play button symbol -->
+                                </div>
+                            </div>
                         @else
                             <img src="https://via.placeholder.com/200x300?text=No+Image" alt="No Image">
                         @endif
 
-                        <div class="movie-title">
-                            <strong>{{ $movie['title'] }}</strong>
-                        </div>
-                        <div class="movie-date">
-                            {{-- Format the release date --}}
-                            {{ \Carbon\Carbon::parse($movie['release_date'])->format('Y') }}
+                        <div class="movie-details">
+                            <div class="movie-title">
+                                <strong>{{ $movie['title'] }}</strong>
+                            </div>
+                            <div class="movie-date">
+                                {{-- Format the release date --}}
+                                {{ \Carbon\Carbon::parse($movie['release_date'])->format('Y') }}
+                            </div>
                         </div>
                     </li>
                 @endforeach

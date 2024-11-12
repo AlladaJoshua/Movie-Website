@@ -3,21 +3,94 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: 'Netflix Sans';
+    src: url('/Font/NetflixSans-Light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+}
 
+@font-face {
+    font-family: 'Netflix Sans';
+    src: url('/Font/NetflixSans-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Netflix Sans';
+    src: url('/Font/NetflixSans-Medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Netflix Sans';
+    src: url('/Font/NetflixSans-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+}
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Poppins;
+    font-family: 'Netflix Sans', Poppins;
+}
+
+body {
+    background-color: #121212;
+    color: white;
+}
+
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    color: #333;
+}
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid #f1c606;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px; /* Space between spinner and text */
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
     padding: 8px 64px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     align-self: stretch;
+    background: rgba(0, 0, 0, 0.85);
+    box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.16),
+        0px 3px 6px 0px rgba(0, 0, 0, 0.23);
+    backdrop-filter: blur(14.100000381469727px);
+    width: 100%;
+    z-index: 1000;
 }
 
 .top-bar ul {
@@ -32,11 +105,12 @@
 
 .top-bar ul li a {
     text-decoration: none;
-    color: black;
+    color: White;
+    font-weight: 500;
 }
 
 .content {
-    padding: 8px 64px;
+    padding: 137px 64px 24px 64px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -51,7 +125,7 @@
     align-items: center;
     border-radius: 4px;
     border: 2px solid gray; /* Inner border */
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(46, 46, 46, 0.5);
     cursor: pointer;
     transition: all 0.3s ease;
     color: black;
@@ -61,8 +135,8 @@
 }
 
 .input-container label {
-    z-index: -1;
     user-select: none;
+    color: white;
 }
 
 .input-container.active {
@@ -73,17 +147,17 @@
     gap: 2px;
     padding: 8px 16px;
     border: 2px solid #b1b1b1;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(46, 46, 46, 0.5);
 
     /* Outer border with transparent gap */
-    box-shadow: 0 0 0 2px white,
-        /* Transparent gap (6px creates the gap) */ 0 0 0 5px #ececec; /* Outer red border with larger space */
+    box-shadow: 0 0 0 2px rgb(152, 152, 152),
+        /* Transparent gap (6px creates the gap) */ 0 0 0 3px #ececec; /* Outer red border with larger space */
     border-radius: 6px;
 }
 
 .input-container.active label {
     font-size: 12px;
-    color: black;
+    color: white;
 }
 
 input {
@@ -92,8 +166,9 @@ input {
     background-color: transparent;
     width: 100%;
     font-size: 16px;
-    color: black;
+    color: white;
     line-height: 17px;
+    caret-color: white;
 }
 
 /* Initially hidden input */
@@ -112,7 +187,6 @@ input {
     justify-content: space-around;
     align-items: center; /* Align items vertically in the center */
     gap: 10px; /* Add spacing between items */
-    
 }
 
 .content .movie-poster-container .movie-content {
@@ -120,24 +194,74 @@ input {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 16px;
     width: 400px;
 }
-
+.content .movie-poster-container .movie-content .movie-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 .content .movie-poster-container .movie-content .movie-title {
     font-size: 16px;
     font-weight: 500;
-}   
+}
 
 .content .movie-poster-container .movie-content .movie-date {
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 300;
 }
 
-.content .movie-poster-container .movie-content img {
-    height: 478px;
+/* Styling the image container */
+.content .movie-poster-container .movie-content .image-container {
+    position: relative;
+    overflow: hidden;
     width: 338px;
+    height: 478px;
 }
 
+.content .movie-poster-container .movie-content .image-container img {
+    display: block;
+    height: 100%;
+    width: 100%;
+    user-select: none;
+    border: 2px solid rgba(46, 46, 46, 0.5);
+    border-radius: 10px;
+}
+
+/* Apply overlay only on the image */
+.content .movie-poster-container .movie-content .image-container .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6); /* Dim background */
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease; /* Smooth fade-in */
+    border-radius: 10px;
+}
+
+/* Style the play button inside overlay */
+.content .movie-poster-container .movie-content .image-container .play-button {
+    font-size: 36px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Hover effect for the overlay and play button */
+.content .movie-poster-container .movie-content .image-container:hover .overlay {
+    opacity: 1;
+}
+
+.content .movie-poster-container .movie-content .image-container:hover .play-button {
+    opacity: 1;
+}
 
 .pagination-nav {
     display: flex;

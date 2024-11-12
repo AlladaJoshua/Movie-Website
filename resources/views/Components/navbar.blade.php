@@ -1,8 +1,11 @@
 <nav class="top-bar">
-    <a href="{{ route('movie.index') }}" class="{{ request()->routeIs('movie.index') ? 'active' : '' }}"><img src="{{ asset('assets/Logo jacliner.svg') }}" alt=""></a>
+    <a href="{{ route('movie.index') }}" class="{{ request()->routeIs('movie.index') ? 'active' : '' }}"><img
+            src="{{ asset('assets/Jac Liner Logo White.svg') }}" alt=""></a>
     <ul>
-        <li><a href="{{ route('movie.index') }}" class="{{ request()->routeIs('movie.index') ? 'active' : '' }}">Movies</a></li>
-        <li><a href="{{ route('movie.create') }}" class="{{ request()->routeIs('movie.create') ? 'active' : '' }}">Add Movie</a></li>
+        <li><a href="{{ route('movie.index') }}"
+                class="{{ request()->routeIs('movie.index') ? 'active' : '' }}">Movies</a></li>
+        <li><a href="{{ route('movie.create') }}" class="{{ request()->routeIs('movie.create') ? 'active' : '' }}">Add
+                Movie</a></li>
     </ul>
     <div class="input-container" onclick="toggleActive(this)">
         <label for="search">Search</label>

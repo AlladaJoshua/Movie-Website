@@ -32,3 +32,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+window.onload = function() {
+  const loader = document.getElementById("loader");
+  if (loader) {
+      loader.style.display = "flex"; // Show the loader while the page loads
+
+      // Hide the loader once the page is fully loaded
+      setTimeout(() => {
+          loader.style.display = "none";
+      }, 500); // Optional delay to improve UX
+  } else {
+      console.log("Loader element not found");
+  }
+};
