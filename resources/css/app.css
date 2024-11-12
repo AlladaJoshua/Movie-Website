@@ -37,6 +37,10 @@
 
 .content {
     padding: 8px 64px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 .input-container {
@@ -102,12 +106,55 @@ input {
     display: inline-block;
 }
 
+.content .movie-poster-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping */
+    justify-content: space-around;
+    align-items: center; /* Align items vertically in the center */
+    gap: 10px; /* Add spacing between items */
+    
+}
+
+.content .movie-poster-container .movie-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+}
+
+.content .movie-poster-container .movie-content .movie-title {
+    font-size: 16px;
+    font-weight: 500;
+}   
+
+.content .movie-poster-container .movie-content .movie-date {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.content .movie-poster-container .movie-content img {
+    height: 478px;
+    width: 338px;
+}
+
+
+.pagination-nav {
+    display: flex;
+    justify-content: center; /* Center the pagination container */
+    margin-top: 20px;
+}
+
 .pagination {
     display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    gap: 8px;
 }
 
 .pagination li {
-    list-style-type: none;
+    margin: 0;
 }
 
 .pagination a,
@@ -115,7 +162,9 @@ input {
     padding: 8px 12px;
     background-color: #ddd;
     color: #333;
+    border-radius: 4px;
     text-decoration: none;
+    font-size: 14px;
 }
 
 .pagination a:hover {
@@ -130,4 +179,16 @@ input {
 .pagination .disabled span {
     background-color: #f1f1f1;
     color: #bbb;
+}
+
+/* For mobile screens */
+@media (max-width: 768px) {
+    /* Hide page numbers on mobile */
+    .pagination .page-number {
+        display: none;
+    }
+
+    .pagination .disabled {
+        display: none;
+    }
 }

@@ -1,5 +1,5 @@
 @if ($paginator->hasPages())
-    <nav>
+    <nav class="pagination-nav">
         <ul class="pagination">
             @if ($paginator->onFirstPage())
                 <li class="disabled"><span>&laquo; Previous</span></li>
@@ -17,7 +17,7 @@
                         @if ($page == $paginator->currentPage())
                             <li class="active"><span>{{ $page }}</span></li>
                         @else
-                            <li><a href="{{ $url }}">{{ $page }}</a></li>
+                            <li class="page-number"><a href="{{ $url }}">{{ $page }}</a></li>
                         @endif
                     @endforeach
                 @endif
