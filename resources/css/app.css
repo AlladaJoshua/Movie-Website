@@ -1,0 +1,93 @@
+@import url("https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Poppins;
+}
+
+nav {
+    padding: 8px 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+}
+
+nav ul {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    list-style-type: none;
+    align-items: center;
+    justify-content: center;
+    width: 512px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+}
+
+.content {
+    padding: 8px 64px;
+}
+
+.input-container {
+    display: flex;
+    width: 368px;
+    height: 45px;
+    padding: 8px 16px;
+    align-items: center;
+    border-radius: 4px;
+    border: 2px solid gray; /* Inner border */
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: black;
+    font-weight: 500;
+    margin-bottom: 25px;
+    margin-top: 25px;
+}
+
+.input-container.active {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2px;
+    padding: 8px 16px;
+    border: 2px solid #b1b1b1;
+    background: rgba(255, 255, 255, 0.5);
+
+    /* Outer border with transparent gap */
+    box-shadow: 0 0 0 2px white,
+        /* Transparent gap (6px creates the gap) */ 0 0 0 5px #ececec; /* Outer red border with larger space */
+    border-radius: 6px;
+}
+
+.input-container.active label {
+    font-size: 12px;
+    color: black;
+}
+
+input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    width: 100%;
+    font-size: 16px;
+    color: black;
+    line-height: 17px;
+}
+
+/* Initially hidden input */
+.hidden-input {
+    display: none;
+}
+
+/* Visible input style */
+.visible-input {
+    display: inline-block;
+}
