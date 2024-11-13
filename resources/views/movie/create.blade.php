@@ -1,3 +1,5 @@
 <x-layout>
-    <h1>create</h1>
+    <div class="content">
+        <h1>Create Page</h1>
+    </div>
 </x-layout>

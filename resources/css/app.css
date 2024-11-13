@@ -248,8 +248,6 @@ input {
 
 /* Style the play button inside overlay */
 .content .movie-poster-container .movie-content .image-container .play-button {
-    font-size: 36px;
-    color: white;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
