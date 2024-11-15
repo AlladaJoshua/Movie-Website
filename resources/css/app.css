@@ -4,29 +4,29 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'Netflix Sans';
-    src: url('/Font/NetflixSans-Light.otf') format('opentype');
+    font-family: "Netflix Sans";
+    src: url("/Font/NetflixSans-Light.otf") format("opentype");
     font-weight: 300;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Netflix Sans';
-    src: url('/Font/NetflixSans-Regular.otf') format('opentype');
+    font-family: "Netflix Sans";
+    src: url("/Font/NetflixSans-Regular.otf") format("opentype");
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Netflix Sans';
-    src: url('/Font/NetflixSans-Medium.otf') format('opentype');
+    font-family: "Netflix Sans";
+    src: url("/Font/NetflixSans-Medium.otf") format("opentype");
     font-weight: 500;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Netflix Sans';
-    src: url('/Font/NetflixSans-Bold.otf') format('opentype');
+    font-family: "Netflix Sans";
+    src: url("/Font/NetflixSans-Bold.otf") format("opentype");
     font-weight: 700;
     font-style: normal;
 }
@@ -35,7 +35,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Netflix Sans', Poppins;
+    font-family: "Netflix Sans", Poppins;
 }
 
 body {
@@ -91,6 +91,7 @@ body {
     backdrop-filter: blur(14.100000381469727px);
     width: 100%;
     z-index: 1000;
+    height: 111px;
 }
 
 .top-bar ul {
@@ -107,14 +108,6 @@ body {
     text-decoration: none;
     color: White;
     font-weight: 500;
-}
-
-.content {
-    padding: 137px 64px 24px 64px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
 }
 
 .input-container {
@@ -181,55 +174,37 @@ input {
     display: inline-block;
 }
 
-.content .movie-poster-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    padding: 0;
+.content {
+    padding: 137px 64px 24px 64px;
     width: 100%;
-    justify-content: center;
-    align-items: center;
 }
 
-.content .movie-poster-container .movie-content {
+.movie-poster-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    justify-content: center;
+}
+
+.movie-poster-container .movie-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 16px;
-}
-.content .movie-poster-container .movie-content .movie-details {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-.content .movie-poster-container .movie-content .movie-title {
-    font-size: clamp(14px, 2vw, 18px); /* Use clamp for responsive font size */
-    font-weight: 500;
-    text-align: center; /* Center the text */
-    overflow: hidden; /* Hide overflow text */
-    text-overflow: ellipsis; /* Add ellipsis for overflow text */
-    white-space: nowrap; /* Prevent text from wrapping */
-    width: 100%; /* Ensure the container has a fixed width */
-    max-width: 100%; /* Ensure the container does not exceed its parent's width */
+    gap: 8px;
+    width: 100%;
 }
 
-.content .movie-poster-container .movie-content .movie-date {
-    font-size: 14px;
-    font-weight: 300;
-}
-
-/* Styling the image container */
-.content .movie-poster-container .movie-content .image-container {
+.movie-poster-container .movie-content .image-container {
     position: relative;
     overflow: hidden;
-    width: 100%; /* Ensure the container takes full width */
-    padding-top: 150%; /* 2:3 aspect ratio (3/2 * 100%) */
+    width: 100%;
+    aspect-ratio: 2 / 3; /* Maintains consistent aspect ratio */
     border-radius: 10px;
+    min-width: 150px;
 }
 
-.content .movie-poster-container .movie-content .image-container img {
+.movie-poster-container .movie-content .image-container img {
     position: absolute;
     top: 0;
     left: 0;
@@ -239,8 +214,23 @@ input {
     border-radius: 10px;
 }
 
-/* Apply overlay only on the image */
-.content .movie-poster-container .movie-content .image-container .overlay {
+.movie-poster-container .movie-content .movie-title {
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: 500;
+    text-align: center;
+    width: 200px;
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide the overflowing text */
+    text-overflow: ellipsis; /* Add an ellipsis (...) */
+}
+
+.movie-poster-container .movie-content .movie-date {
+    font-size: 14px;
+    font-weight: 300;
+    text-align: center;
+}
+
+.movie-poster-container .movie-content .image-container .overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -255,18 +245,16 @@ input {
     border-radius: 10px;
 }
 
-/* Style the play button inside overlay */
-.content .movie-poster-container .movie-content .image-container .play-button {
+.movie-poster-container .movie-content .image-container .play-button {
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
-/* Hover effect for the overlay and play button */
-.content .movie-poster-container .movie-content .image-container:hover .overlay {
+.movie-poster-container .movie-content .image-container:hover .overlay {
     opacity: 1;
 }
 
-.content .movie-poster-container .movie-content .image-container:hover .play-button {
+.movie-poster-container .movie-content .image-container:hover .play-button {
     opacity: 1;
 }
 
@@ -312,6 +300,18 @@ input {
     color: #bbb;
 }
 
+@media (max-width: 1440px) {
+    .movie-poster-container {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    .movie-poster-container .movie-content .image-container {
+        min-width: 100%;
+        width: 100%;
+    }
+}
+
 /* For mobile screens */
 @media (max-width: 768px) {
     /* Hide page numbers on mobile */
@@ -323,7 +323,83 @@ input {
         display: none;
     }
 
-    .content .movie-poster-container {
+    .movie-poster-container {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .movie-poster-container .movie-content .image-container {
+        min-width: 100%;
+        width: 100%;
+    }
+
+    .top-bar .input-container {
+        display: none;
+    }
+
+    .top-bar ul {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .content {
+        padding: 80px 16px 16px 16px;
+    }
+
+    .top-bar {
+        padding: 8px 16px;
+        height: 80px;
+    }
+
+    .top-bar ul {
+        width: auto;
+    }
+
+    /* Adjust movie poster container grid layout for smaller screens */
+    .movie-poster-container {
+        grid-template-columns: repeat(2, 1fr); /* Reduce columns to fit smaller screens */
+        gap: 8px;
+    }
+
+    .movie-poster-container .movie-content .movie-title {
+        font-size: clamp(12px, 4vw, 16px);
+        width: 100px;
+    }
+
+    .movie-poster-container .movie-content .image-container {
+        min-width: 120px; /* Adjust width for smaller screens */
+    }
+
+    /* Adjust pagination for mobile view */
+    .pagination-nav {
+        padding: 0 8px;
+        gap: 4px;
+    }
+
+    .pagination a,
+    .pagination span {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+
+    .input-container {
+        width: 100%;
+    }
+
+    .top-bar .input-container,
+    .top-bar ul {
+        display: none;
+    }
+}
+
+/* Extra small screens (e.g., phones in portrait mode) */
+@media (max-width: 320px) {
+    .movie-poster-container {
+        grid-template-columns: 1fr; /* Single column for very small screens */
+    }
+
+    .movie-poster-container .movie-content .movie-title {
+        width: 80px;
     }
 }
