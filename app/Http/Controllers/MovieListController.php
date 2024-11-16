@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\movie;
+use App\Models\Movie;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -24,6 +24,8 @@ class MovieListController extends Controller
         ]);
 
         $movies = json_decode($response->getBody(), true);
+        $moviesDB = Movie::query()->orderBy('created_at', 'desc')->get();
+        dd($moviesDB);
 
         $paginator = new LengthAwarePaginator(
             $movies['results'], // Items
@@ -55,7 +57,7 @@ class MovieListController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(movie $movie)
+    public function show(Movie $movie)
     {
         return view('movie.show');
     }
@@ -63,7 +65,7 @@ class MovieListController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(movie $movie)
+    public function edit(Movie $movie)
     {
         return view('movie.edit');
     }
@@ -71,7 +73,7 @@ class MovieListController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, movie $movie)
+    public function update(Request $request, Movie $movie)
     {
         //
     }
@@ -79,7 +81,7 @@ class MovieListController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(movie $movie)
+    public function destroy(Movie $movie)
     {
         //
     }
