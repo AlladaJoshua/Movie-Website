@@ -215,13 +215,13 @@ input {
 }
 
 .movie-poster-container .movie-content .movie-title {
-    font-size: clamp(14px, 2vw, 18px);
+    font-size: clamp(12px, 2vw, 18px);
     font-weight: 500;
     text-align: center;
     width: 200px;
     white-space: nowrap; /* Prevent text from wrapping */
     overflow: hidden; /* Hide the overflowing text */
-    text-overflow: ellipsis; /* Add an ellipsis (...) */
+    text-overflow: ellipsis; /* Apply ellipsis when the text overflows */
 }
 
 .movie-poster-container .movie-content .movie-date {
@@ -300,6 +300,80 @@ input {
     color: #bbb;
 }
 
+
+.content-show {
+    padding: 90px 0 24px 0;
+    width: 100%;
+}
+.content-show .container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+.video-contianer {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect ratio */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    overflow: hidden;
+    background-color: black;
+}
+
+.video-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+    opacity: 1;
+    transition: opacity 0.3s ease; /* Smooth fade effect for opacity */
+}
+
+.video-contianer:hover .video-backdrop {
+    opacity: 0.5; /* Dim the backdrop on hover */
+}
+
+video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0; /* Ensure video is under the controls */
+    opacity: 0; /* Ensure video is always visible */
+    pointer-events: all; /* Ensure the video is clickable (important for controls) */
+}
+
+.video-contianer .play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the button */
+    font-size: 50px;
+    color: white;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    padding: 20px;
+    border-radius: 50%;
+    z-index: 2; /* Ensure it's above the video and backdrop */
+    transition: opacity 0.3s ease;
+}
+
+.video-contianer .play-button:hover {
+    background-color: rgba(0, 0, 0, 0.7); /* Darken the button on hover */
+}
 @media (max-width: 1440px) {
     .movie-poster-container {
         grid-template-columns: repeat(4, 1fr);
@@ -315,6 +389,9 @@ input {
 /* For mobile screens */
 @media (max-width: 768px) {
     /* Hide page numbers on mobile */
+    .content {
+        padding: 80px 16px 24px 16px; /* Reduce padding on mobile */
+    }
     .pagination .page-number {
         display: none;
     }
@@ -329,8 +406,12 @@ input {
     }
 
     .movie-poster-container .movie-content .image-container {
-        min-width: 100%;
-        width: 100%;
+        min-width: 50%;
+        width: 50%;
+    }
+
+    .movie-poster-container .movie-content .movie-title {
+        width: 150px; /* Adjust the width for mobile */
     }
 
     .top-bar .input-container {
@@ -358,7 +439,10 @@ input {
 
     /* Adjust movie poster container grid layout for smaller screens */
     .movie-poster-container {
-        grid-template-columns: repeat(2, 1fr); /* Reduce columns to fit smaller screens */
+        grid-template-columns: repeat(
+            2,
+            1fr
+        ); /* Reduce columns to fit smaller screens */
         gap: 8px;
     }
 

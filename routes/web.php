@@ -4,7 +4,9 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\MovieListController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [WelcomeController::class,'welcome'])->name('welcome');
+Route::get('/', function () {
+    return redirect()->route('movie.index');
+});
 
 // Route::get('/movie', [MovieListController::class,'index'])->name('movie.index');
 // Route::get('/movie/create', [MovieListController::class,'create'])->name('movie.create');
