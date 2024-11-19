@@ -42,8 +42,19 @@ class MovieListController extends Controller
         $page = $request->query('page', 1); // Get the current page from the query string
         $perPage = 20; // Number of items per page
 
+        $genreFilter = $request->query('genre');
+        // Fetch genres
+        $genres = Movie::selectRaw('JSON_UNQUOTE(JSON_EXTRACT(genre_ids, "$[*].name")) as name')
+            ->distinct()
+            ->get();
         // Fetch movies from the local database, ordered by creation date
         $moviesQuery = Movie::query()->orderBy('id', 'asc');
+        if ($genreFilter) {
+            $moviesQuery->whereRaw(
+                'JSON_CONTAINS(genre_ids, ?)',
+                ['{"name": "' . $genreFilter . '"}']
+            );
+        }
         $totalMovies = $moviesQuery->count(); // Total number of movies
         $movies = $moviesQuery->skip(($page - 1) * $perPage)->take($perPage)->get(); // Paginate manually
 
@@ -57,7 +68,10 @@ class MovieListController extends Controller
         );
 
         // Render the view with the paginated data
-        return view('movie.index', ['movies' => $paginator]);
+        return view('movie.index', [
+            'movies' => $paginator,
+            'genres' => $genres,
+        ]);
     }
 
     /**
