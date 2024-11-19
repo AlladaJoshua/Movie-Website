@@ -4,12 +4,20 @@
             <div class="video-contianer">
                 <!-- Backdrop image fetched from TMDB -->
                 @if (isset($images['backdrops']) && count($images['backdrops']) > 0)
+                    @php
+                        // Randomize the backdrop
+                        $randomIndex = array_rand($images['backdrops']);
+                        $randomBackdrop = $images['backdrops'][$randomIndex]['file_path'];
+                    @endphp
                     <div class="video-backdrop"
-                        style="background-image: url('https://image.tmdb.org/t/p/w500/{{ $images['backdrops'][0]['file_path'] }}');">
+                        style="background-image: url('https://image.tmdb.org/t/p/w500/{{ $randomBackdrop }}');">
                     </div>
                 @else
                     <div class="video-backdrop" style="background-color: black;"></div> <!-- Default black background -->
                 @endif
+
+                <!-- HD Tag -->
+                <div class="hd-tag">HD</div>
 
                 <!-- Play Button -->
                 <button class="play-button" id="play-button">
@@ -28,22 +36,30 @@
                     controls></video>
             </div>
 
+            <!-- Movie Details -->
             <div class="movie-selected-details">
-                <div class="left">
-                    <img class="movie-poster-selected" src="{{ Storage::url('poster_folder/' . $movie->poster_path) }}"
-                        alt="{{ $movie->title }}">
-                    <h1 class="show_title">{{ $movie->title }}</h1>
-                    <div class="movie_selected_genre">
-                        <ul class="genre">
-                            @foreach (json_decode($movie->genre_ids, true) as $genre)
-                                <li>{{ $genre['name'] }}</li>
-                            @endforeach
-                        </ul>
+                <div class="details-container">
+                    <div class="left">
+                        <img class="movie-poster-selected"
+                            src="{{ Storage::url('poster_folder/' . $movie->poster_path) }}" alt="{{ $movie->title }}">
                     </div>
-                    <div class="overview">
-                        <h4>Overview:</h4>
-                        <p>{{ $movie->overview }}</p>
+                    <div class="right">
+                        <div class="header_descirption">
+                            <h1 class="show_title">{{ $movie->title }}</h1>
+                            <p>{{ $movie->tagline }}</p>
+                        </div>
+                        <div class="movie_selected_genre">
+                            <ul class="genre">
+                                @foreach (json_decode($movie->genre_ids, true) as $genre)
+                                    <li>{{ $genre['name'] }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
+                </div>
+                <div class="overview">
+                    <h1>Overview:</h1>
+                    <p>{{ $movie->overview }}</p>
                 </div>
             </div>
         </div>

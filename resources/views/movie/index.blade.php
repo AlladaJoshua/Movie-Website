@@ -1,14 +1,12 @@
 <x-layout>
-
     {{-- Search Bar Component --}}
-
+    {{-- Optional: Uncomment the search bar if needed --}}
     {{-- <div class="input-container" onclick="toggleActive(this)">
         <label for="search">Search</label>
         <input type="text" name="search" id="search" class="hidden-input" />
     </div> --}}
 
-    {{-- Search Bar Component --}}
-
+    {{-- Movies Content --}}
     <div class="content">
         @if ($movies->count())
             <ul class="movie-poster-container">
@@ -40,7 +38,6 @@
                                 <strong>{{ $movie['title'] }}</strong>
                             </div>
                             <div class="movie-date">
-                                {{-- Format the release date --}}
                                 {{ \Carbon\Carbon::parse($movie['release_date'])->format('Y') }}
                             </div>
                         </div>
@@ -49,7 +46,7 @@
             </ul>
             {{ $movies->links('vendor.pagination.custom') }}
         @else
-            <p>No movies found for "{{ $query }}".</p>
+            <p>No movies found for @if($query) "{{ $query }}" @elseif(request()->query('genre')) "{{ request()->query('genre') }}" @else "the selected filter" @endif.</p>
         @endif
     </div>
 </x-layout>
