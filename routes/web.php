@@ -8,6 +8,10 @@ Route::get('/', function () {
     return redirect()->route('movie.index');
 });
 
+Route::get('/welcome', function () {
+    return view('welcome');
+});
+
 // Route::get('/movie', [MovieListController::class,'index'])->name('movie.index');
 // Route::get('/movie/create', [MovieListController::class,'create'])->name('movie.create');
 // Route::post('/movie', [MovieListController::class,'store'])->name('movie.store');
