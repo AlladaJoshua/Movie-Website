@@ -471,11 +471,14 @@ video {
 .movie-selected-details .details-container .right .movie_selected_genre .genre {
     display: flex;
     gap: 8px;
+    text-decoration: none;
+    list-style: none;
 }
 .movie-selected-details .details-container .right .movie_selected_genre .genre li {
     padding: 5px;
     border: 2px solid gray;
     border-radius: 5px;
+    list-style: none;
 }
 
 @media (max-width: 1440px) {
