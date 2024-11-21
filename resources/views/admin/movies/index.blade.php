@@ -10,7 +10,7 @@
                 </tr>
                 @foreach ($movies as $movie)
                     <tr>
-                        <td>
+                        <td class="table_poster">
                             <div class="image-container">
                                 <img src="{{ Storage::url('poster_folder/' . $movie['poster_path']) }}"
                                     alt="{{ $movie['title'] }} Poster">
@@ -19,9 +19,11 @@
                         <td>{{ $movie['title'] }}</td>
                         <td>{{ $movie['release_date'] }}</td>
                         <td>
-                            @foreach (json_decode($movie->genre_ids, true) as $genre)
-                                <li>{{ $genre['name'] }}</li>
-                            @endforeach
+                            <ul class="table_genre">
+                                @foreach (json_decode($movie->genre_ids, true) as $genre)
+                                    <li>{{ $genre['name'] }}</li>
+                                @endforeach
+                            </ul>
                         </td>
                     </tr>
                 @endforeach

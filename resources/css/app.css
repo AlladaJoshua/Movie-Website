@@ -516,7 +516,13 @@ video {
     vertical-align: middle;
 }
 
-.admin-container table .image-container {
+.admin-container table .table_poster {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-container table .table_poster .image-container {
     display: flex;
     justify-content: center; /* Center the image horizontally */
     align-items: center; 
@@ -531,6 +537,20 @@ video {
     width: 100%;
     height: auto;
     display: block;
+}
+
+.admin-container table .table_genre {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.admin-container table .table_genre li {
+    /* background-color: red; */
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 4px;
 }
 
 @media (max-width: 1440px) {
