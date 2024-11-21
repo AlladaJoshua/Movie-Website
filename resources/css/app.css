@@ -494,9 +494,43 @@ video {
     padding: 24px 32px;
     background-color: white;
     border-radius: 6px;
+    color: black;
 }
 .admin-container h1 {
     color: black;
+}
+
+.admin-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-container table th {
+    padding: 25px;
+    background-color: lightgrey;
+    text-align: center;
+}
+
+.admin-container table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.admin-container table .image-container {
+    display: flex;
+    justify-content: center; /* Center the image horizontally */
+    align-items: center; 
+    max-width: 100px;
+    max-height: 150px;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.admin-container table .image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 @media (max-width: 1440px) {
