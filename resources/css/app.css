@@ -153,15 +153,23 @@ body {
     color: white;
 }
 
-input {
-    border: none;
-    outline: none;
+.hiden-input, .visible-input {
+    border: none !important ;
+    outline: none !important;
     background-color: transparent;
     width: 100%;
     font-size: 16px;
     color: white;
     line-height: 17px;
     caret-color: white;
+}
+
+.visible-input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: initial !important;
+    padding: 0 !important;
+    
 }
 
 /* Initially hidden input */
@@ -479,6 +487,16 @@ video {
     border: 2px solid gray;
     border-radius: 5px;
     list-style: none;
+}
+
+.admin-container {
+    margin: 16px 128px;
+    padding: 24px 32px;
+    background-color: white;
+    border-radius: 6px;
+}
+.admin-container h1 {
+    color: black;
 }
 
 @media (max-width: 1440px) {
