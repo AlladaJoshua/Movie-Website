@@ -553,6 +553,28 @@ video {
     border-radius: 4px;
 }
 
+.add_btn {
+    display: block;
+    padding: 10px;
+    margin-bottom: 16px;
+    /* background-color: red; */
+    color: #007bff;
+    text-align: center;
+    width: 150px;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+}
+
+#search_results {
+    max-height: 200px;  /* Set max height */
+    overflow-y: auto;   /* Make the content scrollable */
+    padding: 8px 0;     /* Add some padding for better spacing */
+    border: 1px solid #ccc; /* Border styling */
+    border-radius: 4px;  /* Rounded corners */
+    background-color: white;
+}
+
+
 @media (max-width: 1440px) {
     .movie-poster-container {
         grid-template-columns: repeat(4, 1fr);

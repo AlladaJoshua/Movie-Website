@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Movie;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Storage;
+use GuzzleHttp\Client;
+
 class AdminMovieController extends Controller
 {
     /**
@@ -13,60 +15,39 @@ class AdminMovieController extends Controller
      */
     public function index(Request $request)
     {
-        // $client = new Client();
-        // $page = $request->query('page', 1);
-        // $response = $client->request('GET', "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&sort_by=popularity.desc&page={$page}", [
-        //     'headers' => [
-        //         'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4YjE5YTE3NTliZDYxMjgzZTdkMTEzYTFhNTZlNTMxMiIsIm5iZiI6MTczMDkzODA0OS4xMTUyMzk0LCJzdWIiOiI2NzAxNzIzZmU0ODAxNDkxNDY4NTZkOTIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.l2Ygzr07ca5uK3yZns54tuP-QuNcyeDIFo6AwYJcAAI',
-        //         'accept' => 'application/json',
-        //     ],
-        // ]);
-
-
-        // $moviesDB = Movie::query()->orderBy('created_at', 'desc')->get();
-        // dd($moviesDB);
-        // $movies = json_decode($response->getBody(), true);
-
-
-        // $paginator = new LengthAwarePaginator(
-        //     $movies['results'], // Items
-        //     $movies['total_results'], // Total items
-        //     20, // Per page
-        //     $page, // Current page
-        //     ['path' => url('/movie')] // URL and query for pagination links
-        // );
-
-        // return view('movie.index', ['movies' => $paginator])->with('paginationView', 'vendor.pagination.custom');
-
-        $page = $request->query('page', 1); // Get the current page from the query string
-        $perPage = 20; // Number of items per page
+        $page = $request->query('page', 1); // Current page
+        $perPage = 20; // Items per page
 
         $genreFilter = $request->query('genre');
-        // Fetch genres
+
+        // Fetch unique genres
         $genres = Movie::selectRaw('JSON_UNQUOTE(JSON_EXTRACT(genre_ids, "$[*].name")) as name')
             ->distinct()
             ->get();
-        // Fetch movies from the local database, ordered by creation date
+
+        // Fetch movies with optional genre filtering
         $moviesQuery = Movie::query()->orderBy('id', 'asc');
         if ($genreFilter) {
             $moviesQuery->whereRaw(
                 'JSON_CONTAINS(genre_ids, ?)',
-                ['{"name": "' . $genreFilter . '"}']
+                [json_encode([['name' => $genreFilter]])]
             );
         }
-        $totalMovies = $moviesQuery->count(); // Total number of movies
-        $movies = $moviesQuery->skip(($page - 1) * $perPage)->take($perPage)->get(); // Paginate manually
 
-        // Create a LengthAwarePaginator instance for the movies
+        // Get total movie count and paginated data
+        $totalMovies = $moviesQuery->count();
+        $movies = $moviesQuery->skip(($page - 1) * $perPage)->take($perPage)->get();
+
+        // Create paginator
         $paginator = new LengthAwarePaginator(
-            $movies, // Items for the current page
-            $totalMovies, // Total items
-            $perPage, // Items per page
-            $page, // Current page
-            ['path' => url('/movie')] // URL for pagination links
+            $movies,
+            $totalMovies,
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()] // Preserve query parameters
         );
 
-        // Render the view with the paginated data
+        // Render the view
         return view('admin.movies.index', [
             'movies' => $paginator,
             'genres' => $genres,
@@ -78,7 +59,7 @@ class AdminMovieController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.movies.create');
     }
 
     /**
@@ -86,15 +67,66 @@ class AdminMovieController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'tmdb_id' => 'required|integer|unique:movies,tmdb_id',
+            'title' => 'required|string|max:255',
+            'tagline' => 'nullable|string|max:255',
+            'release_date' => 'nullable|date',
+            'overview' => 'nullable|string',
+            'poster_path' => 'nullable|string', // Poster path from external URL
+            'background_path' => 'nullable|string|max:255',
+            'vote_average' => 'nullable|numeric',
+            'genre_ids' => 'nullable|json',
+            'runtime' => 'nullable|integer',
+            'subtitle_link' => 'nullable|string|max:255',
+            'vote_count' => 'nullable|integer',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        // Handle poster image from external URL
+        $posterFileName = null;
+        if ($request->has('poster_path')) {
+            $posterUrl = 'https://image.tmdb.org/t/p/w500/' . $request->input('poster_path');
+            
+            // Create a Guzzle client instance
+            $client = new Client();
+
+            try {
+                // Get the image content using Guzzle
+                $imageResponse = $client->get($posterUrl);
+                $imageContent = $imageResponse->getBody();
+
+                // Generate a unique file name
+                $posterFileName = basename($posterUrl);
+
+                // Store the image in 'poster_folder' directory
+                Storage::disk('public')->put('poster_folder/' . $posterFileName, $imageContent);
+
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Failed to fetch image from the URL'], 500);
+            }
+        }
+
+        try {
+            // Save movie data with the actual file name of the poster
+            Movie::create([
+                'tmdb_id' => $request->tmdb_id,
+                'title' => $request->title,
+                'tagline' => $request->tagline,
+                'release_date' => $request->release_date,
+                'overview' => $request->overview,
+                'poster_path' => $posterFileName, // Save the file name of the poster image
+                'background_path' => $request->background_path,
+                'vote_average' => $request->vote_average,
+                'genre_ids' => $request->genre_ids,
+                'runtime' => $request->runtime,
+                'subtitle_link' => $request->subtitle_link,
+                'vote_count' => $request->vote_count,
+            ]);
+
+            return response()->json(['message' => 'Movie uploaded successfully!'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to save movie: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -102,7 +134,8 @@ class AdminMovieController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $movie = Movie::findOrFail($id);
+        return view('admin.movies.edit', compact('movie'));
     }
 
     /**
@@ -110,7 +143,56 @@ class AdminMovieController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $movie = Movie::findOrFail($id);
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'tagline' => 'nullable|string|max:255',
+            'release_date' => 'nullable|date',
+            'overview' => 'nullable|string',
+            'poster' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Poster validation
+            'background_path' => 'nullable|string|max:255',
+            'vote_average' => 'nullable|numeric',
+            'genre_ids' => 'nullable|json',
+            'runtime' => 'nullable|integer',
+            'subtitle_link' => 'nullable|string|max:255',
+            'vote_count' => 'nullable|integer',
+        ]);
+
+        // Handle file upload for the poster
+        if ($request->hasFile('poster') && $request->file('poster')->isValid()) {
+            // Delete the old poster if it exists
+            if ($movie->poster_path && Storage::exists('public/poster_folder/' . $movie->poster_path)) {
+                Storage::delete('public/poster_folder/' . $movie->poster_path);
+            }
+
+            $poster = $request->file('poster');
+            $posterName = time() . '_' . $poster->getClientOriginalName(); // Generate a unique name for the file
+            $poster->storeAs('public/poster_folder', $posterName); // Store new poster
+        } else {
+            $posterName = $movie->poster_path; // Keep the old poster file name if no new file is uploaded
+        }
+
+        try {
+            // Update movie details
+            $movie->update([
+                'title' => $request->title,
+                'tagline' => $request->tagline,
+                'release_date' => $request->release_date,
+                'overview' => $request->overview,
+                'poster_path' => $posterName, // Save only the file name in the database
+                'background_path' => $request->background_path,
+                'vote_average' => $request->vote_average,
+                'genre_ids' => $request->genre_ids,
+                'runtime' => $request->runtime,
+                'subtitle_link' => $request->subtitle_link,
+                'vote_count' => $request->vote_count,
+            ]);
+
+            return response()->json(['message' => 'Movie updated successfully!'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update movie: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -118,6 +200,16 @@ class AdminMovieController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $movie = Movie::findOrFail($id);
+
+        // Delete the movie poster file from storage if it exists
+        if ($movie->poster_path && Storage::exists('public/poster_folder/' . $movie->poster_path)) {
+            Storage::delete('public/poster_folder/' . $movie->poster_path);
+        }
+
+        // Delete the movie record
+        $movie->delete();
+
+        return response()->json(['message' => 'Movie deleted successfully!'], 200);
     }
 }

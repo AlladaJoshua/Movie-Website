@@ -1,5 +1,6 @@
 <x-app-layout>
     <div class="admin-container">
+        <a href="{{ route('admin.movies.create') }}" class="add_btn">Add Movies</a>
         @if ($movies->count())
             <table>
                 <tr>
@@ -28,6 +29,11 @@
                     </tr>
                 @endforeach
             </table>
+
+            <!-- Pagination Links -->
+            <div class="pagination-container">
+                {{ $movies->links('vendor.pagination.custom') }}
+            </div>
         @else
             <p>No movies found for @if ($query)
                     "{{ $query }}"
